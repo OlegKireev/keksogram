@@ -1,5 +1,5 @@
 'use strict';
-  	
+
 var	gulp        	= require('gulp');
 var	sass        	= require('gulp-sass');
 var	browserSync		= require('browser-sync');
@@ -96,7 +96,7 @@ gulp.task('clean', function () {
 gulp.task('copy', function() {
 	return gulp.src([
 		'source/fonts/**/*.{woff,woff2}', // Все файлы шрифтов
-		'source/*.ico' // Все файлы .ico 
+		'source/*.ico' // Все файлы .ico
     ], {
 		base: 'source' // Указываем исходную папку, для того чтобы весь путь к файлу не затерся
     })
@@ -121,7 +121,7 @@ gulp.task('js', function() {
 gulp.task('sprite', function () {
     return gulp
         .src('source/img/sprite/*.svg') // Берем все .svg файлы из папки img/sprite исходников
-        .pipe(svgmin(function (file) { 
+        .pipe(svgmin(function (file) {
             var prefix = path.basename(file.relative, path.extname(file.relative));
             return {
                 plugins: [{
