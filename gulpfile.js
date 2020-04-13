@@ -68,9 +68,9 @@ gulp.task('img-photos', function() {
 		  svgoPlugins: [{removeViewBox: false}],
 		  use: [pngquant()]
 	  })))
-	  .pipe(gulp.dest('build/img')) // Кладем обработанные изображения в папку сборки
+	  .pipe(gulp.dest('build/photos')) // Кладем обработанные изображения в папку сборки
 	  .pipe(webp()) // Создаем webp версии всех .png, .jpg, .tiff изображений
-	  .pipe(gulp.dest('build/img')) // Кладем webp версии изображений в папку сборки
+	  .pipe(gulp.dest('build/photos')) // Кладем webp версии изображений в папку сборки
 	  .pipe(browserSync.reload({stream: true})); // Обновляем страницу
   });
 
