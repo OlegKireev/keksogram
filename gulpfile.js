@@ -28,7 +28,9 @@ gulp.task('browser-sync', function() {
 		server: {
 			baseDir: 'build' // Путь к папке в которой запускается browser-sync
 		},
-		notify: false,
+		port: 8080,
+    open: true,
+    notify: false
 	});
 });
 
@@ -164,7 +166,7 @@ gulp.task('watch', function(cb) {
 	gulp.watch('source/**/*.html', gulp.series('posthtml')); // При сохранении любого .html файла выполнить таск 'posthtml'
 	gulp.watch('source/img/**/*', gulp.series('sprite', 'posthtml', 'img')); // При изменении (добавлении и удалении) любого изображения из папки исходников выполнить таск 'img', также пересобирает svg спрайт
 	gulp.watch('source/img/**/*', gulp.series('img-photos'));
-	gulp.watch('source/*.html').on('change', browserSync.reload); // При изменении любого .html файла обновить страницу
+	gulp.watch('source/**/*').on('change', browserSync.reload); // При изменении любого .html файла обновить страницу
 });
 
 // Сборка проекта

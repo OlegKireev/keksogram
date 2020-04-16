@@ -35,6 +35,7 @@ postsArrayGeneration(25);
 var picturesElement = document.querySelector('.pictures');
 var pictureTemplate = document.querySelector('#picture-template').content;
 
+
 for (var i = 0; i < userPhotos.length; i++) {
   var photoElement = pictureTemplate.cloneNode(true);
   photoElement.querySelector('.picture__img').src = userPhotos[i].url;
@@ -46,6 +47,10 @@ for (var i = 0; i < userPhotos.length; i++) {
   photoComments.textContent = userPhotos[i].comment.length;
 
   picturesElement.appendChild(photoElement);
+  picturesElement.addEventListener('click', function () {
+    console.log(i);
+    bigPhotoGenerate(i);
+  });
 }
 
 function getRandomIndex(min, max) {
@@ -85,9 +90,9 @@ function сommentsGeneration(commentsQuantity) {
 
 var commentsElement = document.querySelector('.social__comments');
 var commentTemplate = document.querySelector('#comment-template').content;
+var postElement = document.querySelector('.big-picture');
 
 function bigPhotoGenerate(postIndex) {
-  var postElement = document.querySelector('.big-picture');
 
   postElement.classList.remove('hidden');
   postElement.querySelector('.big-picture__img img').src = userPhotos[postIndex].url;
@@ -95,12 +100,12 @@ function bigPhotoGenerate(postIndex) {
   postElement.querySelector('.comments-count').textContent = userPhotos[postIndex].comment.length;
   postElement.querySelector('.social__caption').textContent = userPhotos[postIndex].description;
 
-  bigPhotoBuild(postIndex);
+  postCommentsGenerate(postIndex);
 }
-bigPhotoGenerate(2);
+// bigPhotoGenerate(3);
 
 
-function bigPhotoBuild(postIndex) {
+function postCommentsGenerate(postIndex) {
   for (var i = 0; i < userPhotos[postIndex].comment.length; i++) {
     var commentElement = commentTemplate.cloneNode(true);
     commentElement.querySelector('.social__picture').src = 'img/avatar-' + getRandomIndex(1, 6) + '.svg';
@@ -114,3 +119,21 @@ function bigPhotoBuild(postIndex) {
 
 document.querySelector('.social__comment-count').classList.add('visually-hidden');
 document.querySelector('.social__loadmore').classList.add('visually-hidden');
+
+
+var onPhotoPreviewClick = function (evt) {
+
+};
+
+var bigPhotoCloseButton = postElement.querySelector('.big-picture__cancel');
+
+var onBigPhotoCloseClick = function () {
+  postElement.classList.add('hidden');
+};
+
+bigPhotoCloseButton.addEventListener('click', onBigPhotoCloseClick);
+
+
+// при создании превью фотографии
+//   повесить на нее обработчик клика
+//     в котором i = bigPhotoGenerate(i);
