@@ -28,7 +28,7 @@ var userPhotos = [];
 function postsArrayGeneration(photosQuantity) {
   for (var i = 0; i < photosQuantity; i++) {
     userPhotos[i] = {};
-    userPhotos[i].url = getPhotoUrl(i);
+    userPhotos[i].url = createPhotoUrl(i);
     userPhotos[i].likes = getRandomIndex(15, 200);
     userPhotos[i].comment = сommentsGeneration(getRandomIndex(1, 11));
     userPhotos[i].description = arrayRandomElement(descriptions);
@@ -63,51 +63,61 @@ for (var i = 0; i < userPhotos.length; i++) {
   // Помещаем в контейтер созданный элемент миниатюры
   picturesElement.appendChild(photoElement);
 
-  // Обрабочик клика по миниатюре
+  // Обрабочик клика по миниатюре.
   var onSmallPhotoCLick = function (index) {
-    console.log(index);
-    // Показываем большое изображение с коментариями
-    bigPhotoGenerate(index);
+    return function curriedFunction(evt) {
+      evt.preventDefault();
+      // Показываем большое изображение с коментариями
+      openBigPhoto(index);
+      // Добавляем обработчик нажатия Esc
+      document.addEventListener('keydown', onBigPhotoEscKeydown);
+    };
   };
 
   // Записываем в псевдомассив все миниатюры
   var pictureElement = document.querySelectorAll('.picture__link');
-  Задаем миниатюре с текущим индексом обработчик клика и передаем внутрь текущий индекс цикла вторым параметром (иначе, из-за замыкания передается всегда 6);
-  pictureElement[i].addEventListener('click', onSmallPhotoCLick.bind(null, i), false);
+  // Задаем миниатюре с текущим индексом обработчик клика и передаем внутрь функции текущий индекс цикла параметром (иначе, из-за замыкания передается всегда 6);
+  pictureElement[i].addEventListener('click', onSmallPhotoCLick(i), false);
 }
 
-
+// Генерация случайного числа
 function getRandomIndex(min, max) {
   var result = Math.floor(Math.random() * (max - min) + min);
   return result;
 }
 
+// Выбор случайного элемента в массиве
 function arrayRandomElement(arr) {
   var rand = Math.floor(Math.random() * arr.length);
   return arr[rand];
 }
 
-// eslint-disable-next-line no-shadow
-function getPhotoUrl(i) {
+// Создаем путь до изображения
+function createPhotoUrl(i) {
   var url = 'photos/' + (i + 1) + '.jpg';
   return url;
 }
 
+// Создание одного коментария из шаблона
 function getRandomComment() {
   var comment;
+  // Кидаем монетку
   var coinFlip = Math.floor(Math.random() * 2);
+  // Если 1 тогда делаем коментарий из двух предложений
   if (coinFlip) {
     comment = commentsVariants[getRandomIndex(0, commentsVariants.length)] + ' ' + commentsVariants[getRandomIndex(0, commentsVariants.length)];
+  } else {
+    comment = commentsVariants[getRandomIndex(0, commentsVariants.length)];
   }
-  comment = commentsVariants[getRandomIndex(0, commentsVariants.length)];
   return comment;
 }
 
+// Создание массива с комментариями
 function сommentsGeneration(commentsQuantity) {
   var comments = [];
   comments.splice(0, comments.length); // Не понимаю почему без удаления всех значений временного массива с коментариями все работает
-  for (var j = 0; j < commentsQuantity; j++) {
-    comments[j] = getRandomComment();
+  for (var i = 0; i < commentsQuantity; i++) {
+    comments[i] = getRandomComment();
   }
   return comments;
 }
@@ -116,20 +126,19 @@ var commentsElement = document.querySelector('.social__comments');
 var commentTemplate = document.querySelector('#comment-template').content;
 var postElement = document.querySelector('.big-picture');
 
-function bigPhotoGenerate(postIndex) {
-
+function openBigPhoto(postIndex) {
   postElement.classList.remove('hidden');
   postElement.querySelector('.big-picture__img img').src = userPhotos[postIndex].url;
   postElement.querySelector('.likes-count').textContent = userPhotos[postIndex].likes;
   postElement.querySelector('.comments-count').textContent = userPhotos[postIndex].comment.length;
   postElement.querySelector('.social__caption').textContent = userPhotos[postIndex].description;
 
-  postCommentsGenerate(postIndex);
+  postCommentsCreation(postIndex);
 }
-// bigPhotoGenerate(3);
 
-
-function postCommentsGenerate(postIndex) {
+// Генерация случайных комментариев
+function postCommentsCreation(postIndex) {
+  // Запускаем цикл до длины массива с коментариями для текущей миниатюры
   for (var i = 0; i < userPhotos[postIndex].comment.length; i++) {
     var commentElement = commentTemplate.cloneNode(true);
     commentElement.querySelector('.social__picture').src = 'img/avatar-' + getRandomIndex(1, 6) + '.svg';
@@ -137,29 +146,44 @@ function postCommentsGenerate(postIndex) {
     var commentText = commentElement.querySelector('.social__text');
     commentText.textContent = userPhotos[postIndex].comment[i];
 
-    commentsElement.appendChild(commentElement);
+    commentsElement.append(commentElement);
   }
 }
 
+// ВРЕМЕННО скрываем поля в модале с большой фотографией
 document.querySelector('.social__comment-count').classList.add('visually-hidden');
 document.querySelector('.social__loadmore').classList.add('visually-hidden');
 
 
-var onPhotoPreviewClick = function (evt) {
-
-};
-
 var bigPhotoCloseButton = postElement.querySelector('.big-picture__cancel');
 
+// Обработчик клика кнопки "х" закрытия модала с большой фотографией
 var onBigPhotoCloseClick = function () {
-  postElement.classList.add('hidden');
+  closeBigPhotoScreen();
+  deleteComments();
 };
 
-bigPhotoCloseButton.addEventListener('click', onBigPhotoCloseClick);
+// Удаление элементов комментариев с модала большого изображения
+function deleteComments() {
+  for (var i = commentsElement.children.length; i > 0; i--) {
+    commentsElement.children[0].remove(); //[0] - удаление до первогор элемента в псевдомассиве
+  }
+}
 
+// Закрыть модал с большой фотографией
+function closeBigPhotoScreen() {
+  postElement.classList.add('hidden');
+  // Удаляем обрабочик Esc для модала
+  console.log('removed');
+  document.removeEventListener('keydown', onBigPhotoEscKeydown, false);
+}
 
+// Закрываем модал с большой фотографией по клику кнопки "x"
+bigPhotoCloseButton.addEventListener('click', onBigPhotoCloseClick, false);
 
+var onBigPhotoEscKeydown = function (evt) {
+  if (evt.keyCode === 27) {
+    closeBigPhotoScreen();
+  }
+};
 
-// при создании превью фотографии
-//   повесить на нее обработчик клика
-//     в котором i = bigPhotoGenerate(i);

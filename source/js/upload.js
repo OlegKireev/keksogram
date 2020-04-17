@@ -8,26 +8,39 @@ var previewSmallImages = imageEditScreen.querySelectorAll('.effects__preview');
 
 var effectPin = imageEditScreen.querySelector('.scale__pin');
 
-
 // imageEditScreen.classList.remove('hidden');
+
+// Открыть модал редактирования изображения
+var closeUploadScreen = function () {
+  imageEditScreen.classList.add('hidden');
+  // Удалить обработчик клика Esc
+  document.removeEventListener('keydown', onUploadEscKeydown);
+};
+
+// Закрыть модал редактирования изображения
+function openUploadScreen() {
+  imageEditScreen.classList.remove('hidden');
+}
+
+// Обработчик нажатия Esc
+var onUploadEscKeydown = function (evt) {
+  if (evt.keyCode === 27) {
+    closeUploadScreen();
+  }
+};
 
 // Открываем окно редактирования при загрузке любого фото
 uploadImageInput.addEventListener('change', function () {
-  imageEditScreen.classList.remove('hidden');
+  openUploadScreen();
   uploadImageInput.value = '';
+
+  // Добавляем обработчик нажатия Esc
+  document.addEventListener('keydown', onUploadEscKeydown);
 });
 
-// Закрываем окно редактирования при нажатии Esc
-document.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === 27) {
-    imageEditScreen.classList.add('hidden');
-  }
-});
 
-// Закрываем окно редактирования при клике по кноке "х"
-imageEditScreenCloseButton.addEventListener('click', function () {
-  imageEditScreen.classList.add('hidden');
-});
+// Добавляем обработчик клика по кнопке 'x'
+imageEditScreenCloseButton.addEventListener('click', closeUploadScreen);
 
 
 function onEffectPreviewClick(i) {
@@ -43,8 +56,6 @@ function onEffectPreviewClick(i) {
 for (var i = 0; i < previewSmallImages.length; i++) {
   previewSmallImages[i].addEventListener('click', onEffectPreviewClick(i));
 }
-
-
 
 
 // var onEffectPinMouseup = function (evt) {
