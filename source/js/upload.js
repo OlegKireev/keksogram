@@ -44,6 +44,9 @@ for (var i = 0; i < previewSmallImages.length; i++) {
   previewSmallImages[i].addEventListener('click', onEffectPreviewClick(i));
 }
 
+
+
+
 // var onEffectPinMouseup = function (evt) {
 //   effectPin.offsetLeft;
 // };
