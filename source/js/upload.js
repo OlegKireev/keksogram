@@ -8,7 +8,7 @@ var previewSmallImages = imageEditScreen.querySelectorAll('.effects__preview');
 
 var effectPin = imageEditScreen.querySelector('.scale__pin');
 
-// imageEditScreen.classList.remove('hidden');
+imageEditScreen.classList.remove('hidden');
 
 // Открыть модал редактирования изображения
 var closeUploadScreen = function () {
@@ -32,6 +32,7 @@ var onUploadEscKeydown = function (evt) {
 // Открываем окно редактирования при загрузке любого фото
 uploadImageInput.addEventListener('change', function () {
   openUploadScreen();
+  // Обнуляем инпут для возможности повторной загрузки того же изображения
   uploadImageInput.value = '';
 
   // Добавляем обработчик нажатия Esc
@@ -57,12 +58,28 @@ for (var i = 0; i < previewSmallImages.length; i++) {
   previewSmallImages[i].addEventListener('click', onEffectPreviewClick(i));
 }
 
+// var hashtagInput = document.querySelector('.text__hashtags');
 
-// var onEffectPinMouseup = function (evt) {
-//   effectPin.offsetLeft;
+// hashtagInput.addEventListener('focus', function () {
+//   document.removeEventListener('keydown', onUploadEscKeydown);
+// });
+
+// var onEffectPinMouseup = function () {
+//   console.log('mouseup');
+
 // };
 
 // effectPin.addEventListener('mouseup', onEffectPinMouseup);
 
+// // Получаем CSS-свойство filter из класса превью эффекта
+// window.getComputedStyle(document.querySelector('.effects__preview--chrome')).filter;
 
+// var getFilterFill = function() {
 
+// };
+
+// Нахожу кнопки с превью эффектов
+// Вешаю на них обработчик событий
+//   Нажимаю на кнопку превью фильтра
+//     Беру css-свойство filter нажатого превью
+//     Приминяю это свойство к большому изображению

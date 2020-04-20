@@ -30,10 +30,15 @@
         <div class="img-upload__wrapper">
           <h2 class="img-upload__title visually-hidden">Загрузка фотографии</h2>
 
-          <form class="img-upload__form" id="upload-select-image" action="https://js.dump.academy/kekstagram" method="post" enctype="multipart/form-data" autocomplete="off">
+          <form class="img-upload__form"
+                id="upload-select-image"
+                action="https://js.dump.academy/kekstagram"
+                method="post"
+                enctype="multipart/form-data"
+                autocomplete="off">
 
             <fieldset class="img-upload__start">
-              <input type="file" id="upload-file" class="img-upload__input visually-hidden" name="filename" required>
+              <input type="file" id="upload-file" class="img-upload__input visually-hidden" name="filename">
               <label for="upload-file" class="img-upload__label img-upload__control">Загрузить</label>
             </fieldset>
 
@@ -110,7 +115,8 @@
                 </fieldset>
 
                 <fieldset class="img-upload__text text">
-                  <input class="text__hashtags" name="hashtags" minlength="2" placeholder="#хэш-тег">
+                  <input class="text__hashtags" name="hashtags" minlength="2" placeholder="#хэш-тег" pattern="(^|\s)#(\S){1,19}((\s#(\S){1,19})?){1,4}">
+                  <!-- '^' - 'не', аналог ! в JS; '\s' - любой символ whitespace (перенос строки, пробел...); '\S' - любой символ кроме whitespace; '?' - может быть, а может нет быть; '{1,4}' - от одного до четырех повторений-->
                   <textarea class="text__description" maxlength="140" name="description" placeholder="Ваш комментарий..."></textarea>
                 </fieldset>
 
@@ -217,6 +223,9 @@
 
   <script src="js/pictures.js"></script>
   <script src="js/upload.js"></script>
+  <script src="js/scale.js"></script>
+  <script src="js/slider.js"></script>
+  <script src="js/input.js"></script>
 
 </body>
 </html>

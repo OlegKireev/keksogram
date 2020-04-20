@@ -160,7 +160,6 @@ var bigPhotoCloseButton = postElement.querySelector('.big-picture__cancel');
 // Обработчик клика кнопки "х" закрытия модала с большой фотографией
 var onBigPhotoCloseClick = function () {
   closeBigPhotoScreen();
-  deleteComments();
 };
 
 // Удаление элементов комментариев с модала большого изображения
@@ -175,6 +174,7 @@ function closeBigPhotoScreen() {
   postElement.classList.add('hidden');
   // Удаляем обрабочик Esc для модала
   console.log('removed');
+  deleteComments();
   document.removeEventListener('keydown', onBigPhotoEscKeydown, false);
 }
 
@@ -186,4 +186,5 @@ var onBigPhotoEscKeydown = function (evt) {
     closeBigPhotoScreen();
   }
 };
+
 
