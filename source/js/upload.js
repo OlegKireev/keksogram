@@ -7,6 +7,10 @@ var previewBigImageContainer = imageEditScreen.querySelector('.img-upload__previ
 var previewSmallImages = imageEditScreen.querySelectorAll('.effects__preview');
 
 var effectPin = imageEditScreen.querySelector('.scale__pin');
+var effectInput = document.querySelector('.scale__value');
+
+var effectScaleContainer = document.querySelector('.img-upload__scale');
+
 
 imageEditScreen.classList.remove('hidden');
 
@@ -47,39 +51,31 @@ imageEditScreenCloseButton.addEventListener('click', closeUploadScreen);
 function onEffectPreviewClick(i) {
   return function () {
     var effectClassIndex = 1; // Порядковый номер класса который добавляем и удаляем большому изображению
+    // Обработчик содержания превью изображения больше одного класса
     if (previewBigImageContainer.classList.length > effectClassIndex) {
+      // Обнуляем инлайн стили
+      previewBigImageContainer.style = '';
+      // Удаляем предыдущий примененный класс
       previewBigImageContainer.classList.remove(previewBigImageContainer.classList[effectClassIndex]);
     }
-    previewBigImageContainer.classList += ' ' + previewSmallImages[i].classList[effectClassIndex];
+    // Добавляем класс аналогичный соответсвующего превью эффекта
+    previewBigImageContainer.classList.add(previewSmallImages[i].classList[effectClassIndex]);
   };
 }
 
+// Добавляем обработчики на все превью эффектов
 for (var i = 0; i < previewSmallImages.length; i++) {
   previewSmallImages[i].addEventListener('click', onEffectPreviewClick(i));
+  // Добавляем на первое превью эффекта с оригиналом обработчик
+  // на скрытие слайдера интенсивности примененного эффекта
+  if (i === 0) {
+    previewSmallImages[i].addEventListener('click', function () {
+      effectScaleContainer.classList.add('hidden');
+    });
+    // Добавляем на все остальные обработчик на показ слайдера
+  } else {
+    previewSmallImages[i].addEventListener('click', function () {
+      effectScaleContainer.classList.remove('hidden');
+    });
+  }
 }
-
-// var hashtagInput = document.querySelector('.text__hashtags');
-
-// hashtagInput.addEventListener('focus', function () {
-//   document.removeEventListener('keydown', onUploadEscKeydown);
-// });
-
-// var onEffectPinMouseup = function () {
-//   console.log('mouseup');
-
-// };
-
-// effectPin.addEventListener('mouseup', onEffectPinMouseup);
-
-// // Получаем CSS-свойство filter из класса превью эффекта
-// window.getComputedStyle(document.querySelector('.effects__preview--chrome')).filter;
-
-// var getFilterFill = function() {
-
-// };
-
-// Нахожу кнопки с превью эффектов
-// Вешаю на них обработчик событий
-//   Нажимаю на кнопку превью фильтра
-//     Беру css-свойство filter нажатого превью
-//     Приминяю это свойство к большому изображению
