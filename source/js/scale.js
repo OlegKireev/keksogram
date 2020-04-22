@@ -3,9 +3,9 @@
 var resizeButtonMinus = document.querySelector('.resize__control--minus');
 var resizeButtonPlus = document.querySelector('.resize__control--plus');
 var resizeValue = document.querySelector('.resize__control--value');
-var resizeStep = 25;
-var resizeMin = 25;
-var resizeMax = 100;
+var RESIZE_STEP = 25;
+var RESIZE_MIN = 25;
+var RESIZE_MAX = 100;
 
 var uploadPreviewImage = document.querySelector('.img-upload__preview img');
 
@@ -45,11 +45,11 @@ var increaseScale = function (max, step) {
 
 // Обработчики кликов
 var onMinusButtonClick = function () {
-  decreaseScale(resizeMin, resizeStep);
+  decreaseScale(RESIZE_MIN, RESIZE_STEP);
 };
 
 var onPlusButtonClick = function () {
-  increaseScale(resizeMax, resizeStep);
+  increaseScale(RESIZE_MAX, RESIZE_STEP);
 };
 
 // ВРЕМЕННО, добавляем обработчики сразу, после приминения модульности

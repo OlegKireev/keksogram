@@ -15,7 +15,7 @@
   var previewEffectImages = photoEditContainer.querySelectorAll('.effects__preview');
 
   var effects = [
-    '0',
+    'original',
     'grayscale(',
     'sepia(',
     'invert(',
@@ -24,7 +24,7 @@
   ];
 
   // Изначально скрываем ползунок силы эффекта
-  effectScaleContainer.classList.add('hidden');
+  effectScaleContainer.classList.add('visually-hidden');
 
   // Устанавливает превью фотографии класс соответствующего превью эффекта
   function onEffectPreviewClick(i) {
@@ -55,12 +55,12 @@
     // на скрытие слайдера интенсивности примененного эффекта
     if (i === 0) {
       previewEffectImages[i].addEventListener('click', function () {
-        effectScaleContainer.classList.add('hidden');
+        effectScaleContainer.classList.add('visually-hidden');
       });
       // Добавляем на все остальные обработчик на показ слайдера
     } else {
       previewEffectImages[i].addEventListener('click', function () {
-        effectScaleContainer.classList.remove('hidden');
+        effectScaleContainer.classList.remove('visually-hidden');
       });
     }
   }

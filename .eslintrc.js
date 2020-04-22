@@ -89,7 +89,7 @@ module.exports = {
     'no-label-var': 'error',
     'no-shadow': 'error',
     'no-shadow-restricted-names': 'error',
-    'no-undef': 'error', // default
+    // 'no-undef': 'error', // default
     'no-undef-init': 'error',
     'no-undefined': 'off', // https://github.com/htmlacademy/eslint-config-htmlacademy/issues/36
 
