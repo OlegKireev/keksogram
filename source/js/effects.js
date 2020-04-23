@@ -3,16 +3,16 @@
 (function () {
 
   var photoEditContainer = document.querySelector('.img-upload__wrapper');
-  var effectScaleContainer = document.querySelector('.img-upload__scale');
+  window.effectScaleContainer = document.querySelector('.img-upload__scale');
 
-  var effectScale = photoEditContainer.querySelector('.scale__line');
-  var effectPin = effectScale.querySelector('.scale__pin');
-  var effectScaleCurrentLevel = effectScale.querySelector('.scale__level');
-  var effectInput = effectScaleContainer.querySelector('.scale__value');
-  var previewBigPhoto = photoEditContainer.querySelector('.img-upload__preview');
-  var previewEffectInputs = photoEditContainer.querySelectorAll('.effects__radio');
+  window.effectScale = photoEditContainer.querySelector('.scale__line');
+  window.effectPin = effectScale.querySelector('.scale__pin');
+  window.effectScaleCurrentLevel = effectScale.querySelector('.scale__level');
+  window.effectInput = effectScaleContainer.querySelector('.scale__value');
+  window.previewBigPhoto = photoEditContainer.querySelector('.img-upload__preview');
+  window.previewEffectInputs = photoEditContainer.querySelectorAll('.effects__radio');
 
-  var previewEffectImages = photoEditContainer.querySelectorAll('.effects__preview');
+  window.previewEffectImages = photoEditContainer.querySelectorAll('.effects__preview');
 
   var effects = [
     'original',
@@ -23,28 +23,36 @@
     'brightness('
   ];
 
+  window.filterToMax = function () {
+    effectPin.style.left = effectScale.offsetWidth + 'px';
+    // Устанавливаем ширину заполненной части слайдера в конец шкалы
+    effectScaleCurrentLevel.style.width = effectScale.offsetWidth + 'px';
+    // Устанавливаем значение скрытого инпута силы эффекта на максимум
+    effectInput.defaultValue = 100;
+  };
+
+  window.resetPhotoFilter = function () {
+    window.effectClassIndex = 1; // Порядковый номер класса который добавляем и удаляем большому изображению
+    // Обработчик содержания превью изображения больше одного класса
+    if (previewBigPhoto.classList.length > effectClassIndex) {
+      // Обнуляем инлайн стили
+      previewBigPhoto.style = '';
+      // Удаляем предыдущий примененный класс
+      previewBigPhoto.classList.remove(previewBigPhoto.classList[effectClassIndex]);
+    }
+  };
+
   // Изначально скрываем ползунок силы эффекта
-  effectScaleContainer.classList.add('visually-hidden');
+  effectScaleContainer.classList.add('hidden');
 
   // Устанавливает превью фотографии класс соответствующего превью эффекта
   function onEffectPreviewClick(i) {
     return function () {
-      var effectClassIndex = 1; // Порядковый номер класса который добавляем и удаляем большому изображению
-      // Обработчик содержания превью изображения больше одного класса
-      if (previewBigPhoto.classList.length > effectClassIndex) {
-        // Обнуляем инлайн стили
-        previewBigPhoto.style = '';
-        // Удаляем предыдущий примененный класс
-        previewBigPhoto.classList.remove(previewBigPhoto.classList[effectClassIndex]);
-      }
+      resetPhotoFilter();
       // Добавляем класс аналогичный соответсвующего превью эффекта
       previewBigPhoto.classList.add(previewEffectImages[i].classList[effectClassIndex]);
       // Устанавливаем ползунок в конец шкалы
-      effectPin.style.left = effectScale.offsetWidth + 'px';
-      // Устанавливаем ширину заполненной части слайдера в конец шкалы
-      effectScaleCurrentLevel.style.width = effectScale.offsetWidth + 'px';
-      // Устанавливаем значение скрытого инпута силы эффекта на максимум
-      effectInput.defaultValue = 100;
+      filterToMax();
     };
   }
 
@@ -55,12 +63,13 @@
     // на скрытие слайдера интенсивности примененного эффекта
     if (i === 0) {
       previewEffectImages[i].addEventListener('click', function () {
-        effectScaleContainer.classList.add('visually-hidden');
+        effectScaleContainer.classList.add('hidden');
       });
       // Добавляем на все остальные обработчик на показ слайдера
     } else {
       previewEffectImages[i].addEventListener('click', function () {
-        effectScaleContainer.classList.remove('visually-hidden');
+        effectScaleContainer.classList.remove('hidden');
+        filterToMax();
       });
     }
   }
@@ -97,8 +106,8 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
 
-    function onMouseMove(evt) {
-      var newLeft = evt.clientX - effectScale.getBoundingClientRect().left;
+    function onMouseMove(moveEvt) {
+      var newLeft = moveEvt.clientX - effectScale.getBoundingClientRect().left;
 
       // Ограничения области ползунка
       if (newLeft < 0) {
@@ -153,4 +162,5 @@
       changeEffectIntensity();
     }
   });
+
 })();

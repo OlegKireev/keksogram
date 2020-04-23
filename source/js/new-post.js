@@ -6,22 +6,28 @@
   var uploadImageInput = document.querySelector('#upload-file');
   var imageEditScreenCloseButton = imageEditScreen.querySelector('.img-upload__cancel');
 
-  imageEditScreen.classList.remove('hidden');
+  // imageEditScreen.classList.remove('hidden');
 
-  // Открыть модал редактирования изображения
+  // Закрыть модал редактирования изображения
   var closeUploadScreen = function () {
     imageEditScreen.classList.add('hidden');
+    // Удаляем фильтры с большого превью фото
+    resetPhotoFilter();
+    // Прячем ползунок интенсивности эффекта
+    effectScaleContainer.classList.add('hidden');
     // Удалить обработчик клика Esc
     document.removeEventListener('keydown', onUploadEscKeydown);
   };
 
-  // Закрыть модал редактирования изображения
-  function openUploadScreen() {
+  // Открыть модал редактирования изображения
+  var openUploadScreen = function () {
     imageEditScreen.classList.remove('hidden');
-  }
+    // Устанавливаем выбранный эффект на оригинал
+    previewEffectInputs[0].checked = true;
+  };
 
-  // Обработчик нажатия Esc
-  var onUploadEscKeydown = function (evt) {
+  // Обработчик нажатия Esc записываем в глобальную область видимости
+  window.onUploadEscKeydown = function (evt) {
     if (evt.keyCode === 27) {
       closeUploadScreen();
     }
