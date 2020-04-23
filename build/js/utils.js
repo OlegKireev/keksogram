@@ -1,1 +1,1 @@
-"use strict";window.getRandomIndex=function(n,o){return Math.floor(Math.random()*(o-n)+n)},window.arrayRandomElement=function(n){return n[Math.floor(Math.random()*n.length)]},window.createPhotoUrl=function(n){return"photos/"+(n+1)+".jpg"};
+"use strict";window.utils={getRandomIndex:function(t,n){return Math.floor(Math.random()*(n-t)+t)},arrayRandomElement:function(t){return t[Math.floor(Math.random()*t.length)]},createPhotoUrl:function(t){return"photos/"+(t+1)+".jpg"}};

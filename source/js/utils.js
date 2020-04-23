@@ -2,22 +2,26 @@
 
 (function () {
 
-  // Генерация случайного числа
-  window.getRandomIndex = function (min, max) {
-    var result = Math.floor(Math.random() * (max - min) + min);
-    return result;
-  };
+  window.utils = {
 
-  // Выбор случайного элемента в массиве
-  window.arrayRandomElement = function (arr) {
-    var rand = Math.floor(Math.random() * arr.length);
-    return arr[rand];
-  };
+    // Генерация случайного числа
+    getRandomIndex: function (min, max) {
+      var result = Math.floor(Math.random() * (max - min) + min);
+      return result;
+    },
 
-  // Создаем путь до изображения
-  window.createPhotoUrl = function (i) {
-    var url = 'photos/' + (i + 1) + '.jpg';
-    return url;
+    // Выбор случайного элемента в массиве
+    arrayRandomElement: function (arr) {
+      var rand = Math.floor(Math.random() * arr.length);
+      return arr[rand];
+    },
+
+    // Создаем путь до изображения
+    createPhotoUrl: function (i) {
+      var url = 'photos/' + (i + 1) + '.jpg';
+      return url;
+    }
+
   };
 
 })();

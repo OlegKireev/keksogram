@@ -29,10 +29,10 @@
   function postsArrayGeneration(photosQuantity) {
     for (var i = 0; i < photosQuantity; i++) {
       userPhotos[i] = {};
-      userPhotos[i].url = createPhotoUrl(i);
-      userPhotos[i].likes = getRandomIndex(15, 200);
-      userPhotos[i].comment = сommentsGeneration(getRandomIndex(1, 11));
-      userPhotos[i].description = arrayRandomElement(descriptions);
+      userPhotos[i].url = window.utils.createPhotoUrl(i);
+      userPhotos[i].likes = window.utils.getRandomIndex(15, 200);
+      userPhotos[i].comment = сommentsGeneration(window.utils.getRandomIndex(1, 11));
+      userPhotos[i].description = window.utils.arrayRandomElement(descriptions);
     }
   }
 
@@ -47,9 +47,9 @@
     var coinFlip = Math.floor(Math.random() * 2);
     // Если 1 тогда делаем коментарий из двух предложений
     if (coinFlip) {
-      comment = commentsVariants[getRandomIndex(0, commentsVariants.length)] + ' ' + commentsVariants[getRandomIndex(0, commentsVariants.length)];
+      comment = commentsVariants[window.utils.getRandomIndex(0, commentsVariants.length)] + ' ' + commentsVariants[window.utils.getRandomIndex(0, commentsVariants.length)];
     } else {
-      comment = commentsVariants[getRandomIndex(0, commentsVariants.length)];
+      comment = commentsVariants[window.utils.getRandomIndex(0, commentsVariants.length)];
     }
     return comment;
   }
@@ -70,7 +70,7 @@
     // Запускаем цикл до длины массива с коментариями для текущей миниатюры
     for (var i = 0; i < userPhotos[postIndex].comment.length; i++) {
       var commentElement = commentTemplate.cloneNode(true);
-      commentElement.querySelector('.social__picture').src = 'img/avatar-' + getRandomIndex(1, 6) + '.svg';
+      commentElement.querySelector('.social__picture').src = 'img/avatar-' + window.utils.getRandomIndex(1, 6) + '.svg';
 
       var commentText = commentElement.querySelector('.social__text');
       commentText.textContent = userPhotos[postIndex].comment[i];
