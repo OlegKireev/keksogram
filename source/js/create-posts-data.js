@@ -37,7 +37,7 @@
   }
 
   // Наполняем массив созданными объектами
-  postsArrayGeneration(25);
+ postsArrayGeneration(25);
 
   var commentTemplate = document.querySelector('#comment-template').content;
   // Создание одного коментария из шаблона
