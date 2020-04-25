@@ -1,1 +1,166 @@
-"use strict";!function(){var e=document.querySelector(".img-upload__wrapper");window.effectScaleContainer=document.querySelector(".img-upload__scale"),window.effectScale=e.querySelector(".scale__line"),window.effectPin=effectScale.querySelector(".scale__pin"),window.effectScaleCurrentLevel=effectScale.querySelector(".scale__level"),window.effectInput=effectScaleContainer.querySelector(".scale__value"),window.previewBigPhoto=e.querySelector(".img-upload__preview"),window.previewEffectInputs=e.querySelectorAll(".effects__radio"),window.previewEffectImages=e.querySelectorAll(".effects__preview");var t=["original","grayscale(","sepia(","invert(","blur(","brightness("];function f(e){return function(){resetPhotoFilter(),previewBigPhoto.classList.add(previewEffectImages[e].classList[effectClassIndex]),filterToMax()}}window.filterToMax=function(){effectPin.style.left=effectScale.offsetWidth+"px",effectScaleCurrentLevel.style.width=effectScale.offsetWidth+"px",effectInput.defaultValue=100},window.resetPhotoFilter=function(){window.effectClassIndex=1,previewBigPhoto.classList.length>effectClassIndex&&(previewBigPhoto.style="",previewBigPhoto.classList.remove(previewBigPhoto.classList[effectClassIndex]))},effectScaleContainer.classList.add("hidden");for(var c=0;c<previewEffectImages.length;c++)previewEffectImages[c].addEventListener("click",f(c)),0===c?previewEffectImages[c].addEventListener("click",function(){effectScaleContainer.classList.add("hidden")}):previewEffectImages[c].addEventListener("click",function(){effectScaleContainer.classList.remove("hidden"),filterToMax()});function i(){previewEffectInputs[0].checked||(previewEffectInputs[1].checked?previewBigPhoto.style.filter=t[1]+(effectInput.value/100).toFixed(2)+")":previewEffectInputs[2].checked?previewBigPhoto.style.filter=t[2]+(effectInput.value/100).toFixed(2)+")":previewEffectInputs[3].checked?previewBigPhoto.style.filter=t[3]+Math.round(effectInput.value)+"%)":previewEffectInputs[4].checked?previewBigPhoto.style.filter=t[4]+(effectInput.value/33.3).toFixed(2)+"px)":previewEffectInputs[5].checked&&(previewBigPhoto.style.filter=t[5]+(1+effectInput.value/50).toFixed(2)+")"))}effectPin.onmousedown=function(e){function t(e){var t=e.clientX-effectScale.getBoundingClientRect().left;t<0&&(t=0);var f=effectScale.offsetWidth;f<t&&(t=f),effectPin.style.left=t+"px",effectScaleCurrentLevel.style.width=t+"px",effectInput.defaultValue=(t/(effectScale.offsetWidth/100)).toFixed(2),i()}e.preventDefault(),document.addEventListener("mousemove",t),document.addEventListener("mouseup",function e(){document.removeEventListener("mouseup",e);document.removeEventListener("mousemove",t)})},effectPin.ondragstart=function(){return!1},effectScale.addEventListener("click",function(e){var t=e.clientX-effectScale.getBoundingClientRect().left;t>effectScale.offsetWidth||t<0||(effectPin.style.left=t+"px",effectScaleCurrentLevel.style.width=t+"px",effectInput.defaultValue=t,effectInput.defaultValue=Math.round(t/(effectScale.offsetWidth/100)),i())})}();
+'use strict';
+
+(function () {
+
+  var photoEditContainer = document.querySelector('.img-upload__wrapper');
+  window.effectScaleContainer = document.querySelector('.img-upload__scale');
+
+  window.effectScale = photoEditContainer.querySelector('.scale__line');
+  window.effectPin = effectScale.querySelector('.scale__pin');
+  window.effectScaleCurrentLevel = effectScale.querySelector('.scale__level');
+  window.effectInput = effectScaleContainer.querySelector('.scale__value');
+  window.previewBigPhoto = photoEditContainer.querySelector('.img-upload__preview');
+  window.previewEffectInputs = photoEditContainer.querySelectorAll('.effects__radio');
+
+  window.previewEffectImages = photoEditContainer.querySelectorAll('.effects__preview');
+
+  var effects = [
+    'original',
+    'grayscale(',
+    'sepia(',
+    'invert(',
+    'blur(',
+    'brightness('
+  ];
+
+  window.filterToMax = function () {
+    effectPin.style.left = effectScale.offsetWidth + 'px';
+    // Устанавливаем ширину заполненной части слайдера в конец шкалы
+    effectScaleCurrentLevel.style.width = effectScale.offsetWidth + 'px';
+    // Устанавливаем значение скрытого инпута силы эффекта на максимум
+    effectInput.defaultValue = 100;
+  };
+
+  window.resetPhotoFilter = function () {
+    window.effectClassIndex = 1; // Порядковый номер класса который добавляем и удаляем большому изображению
+    // Обработчик содержания превью изображения больше одного класса
+    if (previewBigPhoto.classList.length > effectClassIndex) {
+      // Обнуляем инлайн стили
+      previewBigPhoto.style = '';
+      // Удаляем предыдущий примененный класс
+      previewBigPhoto.classList.remove(previewBigPhoto.classList[effectClassIndex]);
+    }
+  };
+
+  // Изначально скрываем ползунок силы эффекта
+  effectScaleContainer.classList.add('hidden');
+
+  // Устанавливает превью фотографии класс соответствующего превью эффекта
+  function onEffectPreviewClick(i) {
+    return function () {
+      resetPhotoFilter();
+      // Добавляем класс аналогичный соответсвующего превью эффекта
+      previewBigPhoto.classList.add(previewEffectImages[i].classList[effectClassIndex]);
+      // Устанавливаем ползунок в конец шкалы
+      filterToMax();
+    };
+  }
+
+  // Добавляем обработчики на все превью эффектов
+  for (var i = 0; i < previewEffectImages.length; i++) {
+    previewEffectImages[i].addEventListener('click', onEffectPreviewClick(i));
+    // Добавляем на первое превью эффекта с оригиналом обработчик
+    // на скрытие слайдера интенсивности примененного эффекта
+    if (i === 0) {
+      previewEffectImages[i].addEventListener('click', function () {
+        effectScaleContainer.classList.add('hidden');
+      });
+      // Добавляем на все остальные обработчик на показ слайдера
+    } else {
+      previewEffectImages[i].addEventListener('click', function () {
+        effectScaleContainer.classList.remove('hidden');
+        filterToMax();
+      });
+    }
+  }
+
+  // Устанавливаем превью фотографии стиль как в выбранном превью эффекта
+  var changeEffectIntensity = function () {
+    if (previewEffectInputs[0].checked) {
+      return;
+    } else if (previewEffectInputs[1].checked) {
+      // Значения (0 - 1.00)
+      previewBigPhoto.style.filter = effects[1] + (effectInput.value / 100).toFixed(2) + ')';
+    } else if (previewEffectInputs[2].checked) {
+      // Значения (0 - 1.00)
+      previewBigPhoto.style.filter = effects[2] + (effectInput.value / 100).toFixed(2) + ')';
+    } else if (previewEffectInputs[3].checked) {
+      // Значения (0 - 100)
+      previewBigPhoto.style.filter = effects[3] + Math.round(effectInput.value) + '%)';
+    } else if (previewEffectInputs[4].checked) {
+      // Значения (0 - 3.00)
+      previewBigPhoto.style.filter = effects[4] + (effectInput.value / 33.3).toFixed(2) + 'px)';
+    } else if (previewEffectInputs[5].checked) {
+      // Значения (1.00 - 3.00)
+      previewBigPhoto.style.filter = effects[5] + (1 + effectInput.value / 50).toFixed(2) + ')';
+    }
+  };
+
+  // Шкала интенсивности эффекта
+  effectPin.onmousedown = function (evt) {
+    evt.preventDefault();
+
+    // Вычисление смещения курсора относительно центра ползунка
+    // var shiftX = evt.clientX - effectPin.getBoundingClientRect().left;
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+
+    function onMouseMove(moveEvt) {
+      var newLeft = moveEvt.clientX - effectScale.getBoundingClientRect().left;
+
+      // Ограничения области ползунка
+      if (newLeft < 0) {
+        newLeft = 0;
+      }
+      // Задаем правую границу шкалы
+      var rightEdge = effectScale.offsetWidth;
+      if (newLeft > rightEdge) {
+        newLeft = rightEdge;
+      }
+
+      // Устанавливаем смещение слайдера
+      effectPin.style.left = newLeft + 'px';
+      // Устанавливаем ширину заполненной части слайдера
+      effectScaleCurrentLevel.style.width = newLeft + 'px';
+      // Задаем значение value скрытому инпуту чтобы использовать
+      // его для интенсивности филтра
+      effectInput.defaultValue = (newLeft / (effectScale.offsetWidth / 100)).toFixed(2);
+
+      // Устанавливаем превью фотографии стиль как в выбранном превью эффекта
+      changeEffectIntensity();
+
+    }
+
+    // Удаляем обработчики событий при отпускании кнопки мыши
+    function onMouseUp() {
+      document.removeEventListener('mouseup', onMouseUp);
+      document.removeEventListener('mousemove', onMouseMove);
+    }
+  };
+
+  // На всякий случай предотвращаем встроенный в браузер dnd
+  effectPin.ondragstart = function () {
+    return false;
+  };
+
+  // Перемещение ползунка по клику по линии
+  effectScale.addEventListener('click', function (evt) {
+    // Вычисляем нажатый пиксель на шкале
+    var clickedPoint = evt.clientX - effectScale.getBoundingClientRect().left;
+    // Проверка для того чтобы ползунок не мог уехать за пределы шкалы
+    if (clickedPoint > effectScale.offsetWidth || clickedPoint < 0) {
+      return;
+    } else {
+      // Устанавливаем ползунок на эту точку
+      effectPin.style.left = clickedPoint + 'px';
+      // Устанавливаем ширину заполненной части слайдера
+      effectScaleCurrentLevel.style.width = clickedPoint + 'px';
+      // Задаем value скрытому инпуту
+      effectInput.defaultValue = clickedPoint;
+      effectInput.defaultValue = Math.round(clickedPoint / (effectScale.offsetWidth / 100));
+      changeEffectIntensity();
+    }
+  });
+
+})();

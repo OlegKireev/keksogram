@@ -1,23 +1,41 @@
-'use strict';
+// 'use strict';
 
 // (function () {
 
-//  Записываем объект запроса на сервер в переменную
-var xhr = new XMLHttpRequest();
-var DATA_URL = 'https://flucky.design/server/userPhotosData.json';
-console.log(xhr.readyState);
-// xhr.responseType = 'json';
-// Указываем метод и адрес куда отправляем запрос
-xhr.open('GET', DATA_URL);
+//   window.load = function (url, onSuccess, onError) {
+//     //  Записываем объект запроса на сервер в переменную
+//     var xhr = new XMLHttpRequest();
+//     xhr.responseType = 'json';
 
-console.log(xhr.readyState);
+//     xhr.addEventListener('load', function () {
+//       switch (xhr.status) {
+//         case 200:
+//           onSuccess(xhr.response);
+//           break;
 
-xhr.send();
+//         default:
+//           onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
+//       }
+//     });
 
-xhr.addEventListener('load', function () {
-  console.log(xhr.readyState);
-  console.log(xhr.responseText);
+//     // Добавляем на объект запроса обработчик события ошибки
+//     xhr.addEventListener('error', function () {
+//       onError('Произошла ошибка соединения');
+//     });
 
-  console.log(xhr.status + ' ' + xhr.statusText);
-});
+//     // Добавляем на объект запроса обработчик события ошибки ожидания
+//     xhr.addEventListener('timeout', function () {
+//       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+//     });
+
+//     // Установим таймаут ожидания ответа в мс.
+//     xhr.timeout = 1000;
+
+//     // Указываем метод и адрес куда отправляем запрос
+//     xhr.open('GET', url);
+//     // Отправляем запрос
+//     xhr.send();
+//   };
 // })();
+
+

@@ -115,7 +115,7 @@ gulp.task('html', function() {
 // Обновление js-файлов
 gulp.task('js', function() {
 	return gulp.src('source/js/*.js') // Берем все js файлы в папке исходников
-	.pipe(uglify()) // Минифицируем
+	// .pipe(uglify()) // Минифицируем
 	.pipe(gulp.dest('build/js/')) // Кладем их в папку со сборкой
 	.pipe(browserSync.reload({stream: true})); // Обновляем страницу
 });
