@@ -99,7 +99,7 @@ gulp.task('copy', function() {
 	return gulp.src([
 		'source/fonts/**/*.{woff,woff2}', // Все файлы шрифтов
     'source/*.ico', // Все файлы .ico
-    'source/server/**.*'
+    'source/server/**/*.*'
     ], {
 		base: 'source' // Указываем исходную папку, для того чтобы весь путь к файлу не затерся
     })
