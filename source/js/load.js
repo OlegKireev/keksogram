@@ -1,18 +1,27 @@
-'use strict';
+// 'use strict';
 
-(function () {
-  var URL = 'https://flucky.design/build/server/userPhotosData.json';
+// (function () {
 
-  window.load = function (onSuccess, onError) {
-    var xhr = new XMLHttpRequest();
-    xhr.responseType = 'json';
+//   window.load = function (url, onSuccess, onError) {
+//     var xhr = new XMLHttpRequest();
+//     xhr.responseType = 'json';
+//     xhr.timeout = 5000;
 
-    xhr.open('GET', URL);
+//     xhr.open('GET', url);
 
-    xhr.addEventListener('load', function () {
-      onSuccess(xhr.response);
-    });
+//     xhr.addEventListener('load', function () {
+//       if (xhr.status === 200) {
+//         onSuccess(xhr.response);
+//       } else {
+//         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
+//       }
+//     });
 
-    xhr.send();
-  };
-})();
+//     // Добавляем на объект запроса обработчик события ошибки ожидания
+//     xhr.addEventListener('timeout', function () {
+//       onError('Запрос не успел выполниться за ' + xhr.timeout + ' мс');
+//     });
+
+//     xhr.send();
+//   };
+// })();

@@ -988,7 +988,7 @@ cursor: pointer;
   display: block;
   -ms-flex-negative: 0;
         flex-shrink: 0;
-  margin-right: 15px;
+  // margin-right: 15px;
 }
 
 .social__caption {
@@ -1299,4 +1299,18 @@ cursor: pointer;
     -ms-grid-row-span: 3;
     grid-row: 1 / span 3;
   }
+};
+
+.social__name {
+  margin: 0;
+  font-weight: 700;
+}
+
+.comment__wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-right: 15px;
+  min-width: 50px;
 }

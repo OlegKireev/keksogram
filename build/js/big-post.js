@@ -2,29 +2,39 @@
 
 (function () {
 
+  // Контейнер для коментариев
   window.commentsElement = document.querySelector('.social__comments');
+  // Модальное окно с постом с фото и комментариями
   var postElement = document.querySelector('.big-picture');
+  // 'body' страницы
   var pageBody = document.querySelector('body');
 
-  // Показываем большое фото
-  window.load(function (userPhotos) {
+  // Действия при успрешной загрузке данных с сервера
 
+  var onSuccess = function (postsData) {
+
+    // Открываем модал с фотографией
     window.openBigPhoto = function (postIndex) {
-      postElement.querySelector('.big-picture__img img').src = userPhotos[postIndex].url;
-      postElement.querySelector('.likes-count').textContent = userPhotos[postIndex].likes;
-      postElement.querySelector('.comments-count').textContent = userPhotos[postIndex].comments.length;
-      postElement.querySelector('.social__caption').textContent = userPhotos[postIndex].description;
+      // Подставляем данные поста из json файла с сервера
+      postElement.querySelector('.big-picture__img img').src = postsData[postIndex].url;
+      postElement.querySelector('.likes-count').textContent = postsData[postIndex].likes;
+      postElement.querySelector('.comments-count').textContent = postsData[postIndex].comments.length;
+      postElement.querySelector('.social__caption').textContent = postsData[postIndex].description;
 
       window.postCommentsCreation = function (postIndex) {
         var commentTemplate = document.querySelector('#comment-template').content;
         // Запускаем цикл до длины массива с коментариями для текущей миниатюры
-        for (var i = 0; i < userPhotos[postIndex].comments.length; i++) {
+        for (var i = 0; i < postsData[postIndex].comments.length; i++) {
           var commentElement = commentTemplate.cloneNode(true);
-          commentElement.querySelector('.social__picture').src = userPhotos[postIndex].comments[i].avatar;
+          commentElement.querySelector('.social__picture').src = postsData[postIndex].comments[i].avatar;
+
+          var commentName = commentElement.querySelector('.social__name');
+          commentName.textContent = postsData[postIndex].comments[i].name;
 
           var commentText = commentElement.querySelector('.social__text');
-          commentText.textContent = userPhotos[postIndex].comments[i].comment;
+          commentText.textContent = postsData[postIndex].comments[i].message;
 
+          // commentElement.append(postsData[postIndex].comments[i].name);
           commentsElement.append(commentElement);
         }
       };
@@ -72,6 +82,22 @@
       }
     };
 
-  });
+  };
+  var onError = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; padding: 10px 0; text-align: center; background-color: tomato;';
+    node.style.position = 'abolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+
+  // Адрес до json файла с данными
+  var dataUrl = 'https://javascript.pages.academy/kekstagram/data';
+  // Отправляем запрос на сервер
+  window.backend.load(dataUrl, onSuccess, onError);
 
 })();
