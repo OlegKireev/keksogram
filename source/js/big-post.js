@@ -7,7 +7,7 @@
   // Модальное окно с постом с фото и комментариями
   var postElement = document.querySelector('.big-picture');
   // 'body' страницы
-  var pageBody = document.querySelector('body');
+  window.pageBody = document.querySelector('body');
 
   // Действия при успрешной загрузке данных с сервера
 
@@ -83,6 +83,7 @@
     };
 
   };
+
   var onError = function (errorMessage) {
     var node = document.createElement('div');
     node.style = 'z-index: 100; margin: 0 auto; padding: 10px 0; text-align: center; background-color: tomato;';
@@ -99,5 +100,4 @@
   var dataUrl = 'https://javascript.pages.academy/kekstagram/data';
   // Отправляем запрос на сервер
   window.backend.load(dataUrl, onSuccess, onError);
-
 })();
